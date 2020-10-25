@@ -21,19 +21,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@master
 
-      # Runs a single command using the runners shell
-      - name: Install Rust
-        run: rustup update stable && rustup default stable
-      - run: cargo install mdbook --version 0.4.1
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: '0.3.7'
+          # mdbook-version: 'latest'
 
-      # Runs a set of commands using the runners shell
-      - name: Build book
-        run:  mdbook build .
-        
-      - name: Deploy to gh-pages
+      - run: mdbook build
+
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
           publish_dir: ./book
