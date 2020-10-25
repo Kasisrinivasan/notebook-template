@@ -1,1 +1,1 @@
-Home page
+Template Home page
